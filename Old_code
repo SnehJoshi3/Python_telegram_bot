@@ -1,0 +1,815 @@
+import os  # for env variables 
+
+import telebot  # THE LIBRARY FOR THE TELEGRAM BOT 
+
+import time  # FOR REMINDER WE NEED TO IMPORT TIME 
+
+import random 
+
+import requests 
+
+import response 
+
+import urllib.request 
+
+from bs4 import BeautifulSoup  #NEEDED FOR NEWS 
+
+ 
+
+#THE BOT HAS BEEN CREATED 
+
+API_KEY = os.getenv( 
+
+  'API_KEY')  # THE API KEY IS THE TOKEN ID GIVEN BY THE BOTFATHER 
+
+bot = telebot.TeleBot(API_KEY) 
+
+ 
+
+ 
+
+#DECLARATION OF COMMANDS 
+
+@bot.message_handler(commands=['start']) 
+
+def start(message): 
+
+  bot.reply_to( 
+
+    message, 
+
+    "Hello this is Artificix bot use /help for the possible commands. ") 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['help']) 
+
+def help(message): 
+
+  bot.send_message( 
+
+    message.chat.id, 
+
+    "Here are the possible commands\n Use /alert for setting a remainder.\n Use /chat to start chatting.\n Use /news to get latest news headlines.\n Use /about to know about bot.\n Use /contact to cantact us.\n Use /quote to get a random quote.\n Use /extra for extra commands that are included.\n" 
+
+  ) 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['about']) 
+
+def about(message): 
+
+  bot.send_message( 
+
+    message.chat.id, 
+
+    "Hi this is @Artificix_prototype_bot.\n I am a simple telegram bot that can set alerts for you as well can interact with you.\n Currently i am a basic bot but will improve in future!.\n" 
+
+  ) 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['contact']) 
+
+def contact(message): 
+
+  bot.send_message( 
+
+    message.chat.id, 
+
+    "You can contact us at https://t.me/Sneh_Joshi or https://t.me/Itachi98089 .\n" 
+
+  ) 
+
+ 
+
+ 
+
+# List of quotes 
+
+quotes = [ 
+
+  "Life is abundant, and life is beautiful. And it's a good place that we're all in, you know, on this earth, if we take care of it\n― Alice Walker", 
+
+  "Keep your head high, keep your chin up, and most importantly, keep smiling, because life’s a beautiful thing and there’s so much to smile about.\n― Marilyn Monroe", 
+
+  "I think being in love with life is a key to eternal youth.\n― Doug Hutchison", 
+
+  "Life is beautiful and so are you.\n― Debasish Mridha", 
+
+  "The purpose of our lives is to be happy.\n― Dalai Lama", 
+
+  "Once you become accustomed to life you will see its full meaning and its incredible beauty.\n― Jon Krakauer", 
+
+  "Life is really simple, but we insist on making it complicated.\n― Confucius", 
+
+  "Life is like riding a bicycle. To keep your balance, you must keep moving.\n― Albert Einstein", 
+
+  "Life can only be understood backward, but it must be lived forwards\n― Soren Kierkegaard", 
+
+  "This journey of life is special. Don't waste it by doing things that don't matter.\n― Avijeet Das", 
+
+  " Life has always been and will always be beautiful, regardless of how some or even all people have looked, are looking, or will look at it.\n― Mokokoma Mokhonoana", 
+
+  "Life is as beautiful as the stars and the moon except when it is covered by the clouds of sadness and pain.\n― Debasish Mridha", 
+
+  "Life is full of beauty. Notice it. Notice the bumble bee, the small child, and the smiling faces. Smell the rain, and feel the wind. Live your life to the fullest potential, and fight for your dreams.\n― Ashley Smith", 
+
+  "Learn to enjoy every minute of your life. Be happy now. Don’t wait for something outside of yourself to make you happy in the future. Think how really precious is the time you have to spend, whether it’s at work or with your family. Every minute should be enjoyed and savored.\n― Earl Nightingale", 
+
+  "Taking pictures is savoring life intensely, every hundredth of a second.\n― Marc Riboud" 
+
+] 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['quote']) 
+
+def send_quote(message): 
+
+  quote = random.choice(quotes) 
+
+  bot.reply_to(message, quote) 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['extra']) 
+
+def extra(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    extra_commands_message = '''Here are the extra commands: 
+
+        Use /flower to get names of flowers. 
+
+        Use /animal to get names of animals. 
+
+        Use /food to get food names. 
+
+        Use /wonder to get names of ancient wonders. 
+
+        Use /vehicle to get names of vehicles. 
+
+        Use /country to get names of countries.''' 
+
+    bot.send_message(chat_id, extra_commands_message) 
+
+  else: 
+
+    bot.send_message( 
+
+      chat_id, 
+
+      'The /extra command is not available and as well as all listed commands are not availabe in group chats.' 
+
+    ) 
+
+ 
+
+ 
+
+# Define the function to handle the /flower command 
+
+@bot.message_handler(commands=['flower']) 
+
+def flower(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 14 flower names 
+
+    flowers = [ 
+
+      "Rose", "Lily", "Daisy", "Tulip", "Sunflower", "Orchid", "Carnation", 
+
+      "Peony", "Chrysanthemum", "Hydrangea", "Iris", "Poppy", "Marigold", 
+
+      "Gerbera" 
+
+    ] 
+
+ 
+
+    # Send each flower name in a separate message 
+
+    for flower_name in flowers: 
+
+      bot.send_message(chat_id, flower_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /flower command is not available in group chats.') 
+
+ 
+
+ 
+
+# Define the function to handle the /animal command 
+
+@bot.message_handler(commands=['animal']) 
+
+def animal(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 14 animal names 
+
+    animals = [ 
+
+      "Lion", "Tiger", "Elephant", "Giraffe", "Hippopotamus", "Crocodile", 
+
+      "Monkey", "Kangaroo", "Penguin", "Zebra", "Hedgehog", "Panda", "Koala", 
+
+      "Gorilla" 
+
+    ] 
+
+ 
+
+    # Send each animal name in a separate message 
+
+    for animal_name in animals: 
+
+      bot.send_message(chat_id, animal_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /animal command is not available in group chats.') 
+
+ 
+
+ 
+
+@bot.message_handler(commands=['food']) 
+
+def food(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 10 food names 
+
+    foods = [ 
+
+      "Pizza", "Burger", "Taco", "Sushi", "Pasta", "Fried Chicken", "Steak", 
+
+      "Noodle Soup", "Hotdog", "Ramen" 
+
+    ] 
+
+ 
+
+    # Send each food name in a separate message 
+
+    for food_name in foods: 
+
+      bot.send_message(chat_id, food_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /food command is not available in group chats.') 
+
+ 
+
+ 
+
+# Define the function to handle the /vehicle command 
+
+@bot.message_handler(commands=['vehicle']) 
+
+def vehicle(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 10 vehicle names 
+
+    vehicles = [ 
+
+      "Car", "Truck", "Motorcycle", "Bicycle", "Boat", "Airplane", 
+
+      "Helicopter", "Train", "Bus", "Scooter" 
+
+    ] 
+
+ 
+
+    # Send each vehicle name in a separate message 
+
+    for vehicle_name in vehicles: 
+
+      bot.send_message(chat_id, vehicle_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /vehicle command is not available in group chats.') 
+
+ 
+
+ 
+
+# Define the function to handle the /country command 
+
+@bot.message_handler(commands=['country']) 
+
+def country(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 10 country names 
+
+    countries = [ 
+
+      "USA", "Canada", "UK", "Germany", "France", "Italy", "Japan", "China", 
+
+      "Brazil", "Russia", "India" 
+
+    ] 
+
+ 
+
+    # Send each country name in a separate message 
+
+    for country_name in countries: 
+
+      bot.send_message(chat_id, country_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /country command is not available in group chats.') 
+
+ 
+
+ 
+
+# Define the function to handle the /wonder command 
+
+@bot.message_handler(commands=['wonder']) 
+
+def wonder(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    # List of 7 wonders of the ancient world 
+
+    wonders = [ 
+
+      "Great Pyramid of Giza", "Hanging Gardens of Babylon", 
+
+      "Temple of Artemis at Ephesus", "Statue of Zeus at Olympia", 
+
+      "Mausoleum at Halicarnassus", "Colossus of Rhodes", 
+
+      "Lighthouse of Alexandria" 
+
+    ] 
+
+    # Send each wonder name in a separate message 
+
+    for wonder_name in wonders: 
+
+      bot.send_message(chat_id, wonder_name) 
+
+  else: 
+
+    bot.send_message(chat_id, 
+
+                     'The /wonder command is not available in group chats.') 
+
+ 
+
+ 
+
+#commands declaration ends here. 
+
+ 
+
+#module 1 starts here.......... 
+
+#This sets alert for the user... 
+
+ 
+
+ 
+
+#COMMAND TO GET TITLE FOR THE ALERT 
+
+@bot.message_handler(commands=['alert']) 
+
+def get_name(message): 
+
+  text = "What should I remind you about?" 
+
+  sent_msg = bot.send_message(message.chat.id, text, parse_mode="Markdown") 
+
+  bot.register_next_step_handler(sent_msg, get_min) 
+
+ 
+
+ 
+
+# COMMAND TO INPUT MINS FROM USER 
+
+def get_min(message): 
+
+ 
+
+  text = "In how many minutes? (Please enter time in minutes)" 
+
+  sent_msg = bot.send_message(message.chat.id, text, parse_mode="Markdown") 
+
+  bot.register_next_step_handler(sent_msg, set_reminder, message.text) 
+
+ 
+
+ 
+
+def set_reminder(message, reminder_text): 
+
+  try: 
+
+    minutes = int(message.text) 
+
+    if minutes <= 0: 
+
+      bot.reply_to(message, "Please enter a positive number of minutes.") 
+
+      return 
+
+    job = bot.send_message( 
+
+      message.chat.id, f"Reminder set for {minutes} minutes: {reminder_text}") 
+
+    time.sleep(minutes * 60) 
+
+    bot.send_message(message.chat.id, f"Reminder: {reminder_text}") 
+
+  except ValueError: 
+
+    bot.reply_to( 
+
+      message, "Invalid number of minutes. Please enter a positive integer.") 
+
+ 
+
+ 
+
+#here module 1 ends ... 
+
+ 
+
+#news module 
+
+URL = 'https://www.bbc.com/news' 
+
+# Scrape the website and extract the headlines 
+
+response = requests.get(URL) 
+
+soup = BeautifulSoup(response.text, 'html.parser') 
+
+headlines = soup.find('body').find_all('h3') 
+
+unwanted = [ 
+
+  'BBC World News TV', 'BBC World Service Radio', 'News daily newsletter', 
+
+  'Mobile app', 'Get in touch' 
+
+] 
+
+news = [x.text.strip() for x in headlines if x.text.strip() not in unwanted] 
+
+ 
+
+ 
+
+# Handler for receiving messages 
+
+@bot.message_handler(commands=['news']) 
+
+def send_news(message): 
+
+  chat_id = message.chat.id 
+
+ 
+
+  if message.chat.type == 'private': 
+
+    for item in news: 
+
+      bot.send_message(chat_id, item) 
+
+  else: 
+
+    bot.send_message(chat_id, 'News is not available in group chats.') 
+
+ 
+
+ 
+
+#news module ends here 
+
+ 
+
+#chatbot module starts here... 
+
+ 
+
+# Creating the predefined keyboard markup 
+
+#THE KEYBOARD MARKUP WILL ALLOW USER TO SELECT ANY OPTION 
+
+keyboard_markup = telebot.types.ReplyKeyboardMarkup(row_width=2) 
+
+sports_button = telebot.types.KeyboardButton('Sports') 
+
+reading_button = telebot.types.KeyboardButton('Reading') 
+
+music_button = telebot.types.KeyboardButton('Music') 
+
+art_button = telebot.types.KeyboardButton('Art') 
+
+keyboard_markup.add(sports_button, reading_button, music_button, art_button) 
+
+ 
+
+ 
+
+# Registering the chat command handler 
+
+@bot.message_handler(commands=['chat']) 
+
+def send_welcome(message): 
+
+  # Sending the welcome message and predefined keyboard 
+
+  bot.reply_to( 
+
+    message, 
+
+    "Hi there! I'm a chatbot that can chat with you about your interests. " 
+
+    "Choose from the following options by clicking on one of the buttons below:", 
+
+    reply_markup=keyboard_markup) 
+
+ 
+
+ 
+
+# Handling user inputs based on the predefined keyboard options 
+
+@bot.message_handler(func=lambda message: True) 
+
+def handle_message(message): 
+
+  if message.text == 'Sports': 
+
+    # Handling the sports option 
+
+    bot.reply_to(message, 
+
+                 "Great choice! What kind of sports are you interested in?") 
+
+ 
+
+    # Adding a new state for handling type of sports 
+
+    bot.register_next_step_handler(message, handle_sports_type) 
+
+  elif message.text == 'Reading': 
+
+    # Handling the reading option 
+
+    bot.reply_to(message, "Awesome! What kind of books do you like to read?") 
+
+    bot.register_next_step_handler(message, handle_book_type) 
+
+  elif message.text == 'Music': 
+
+    # Handling the music option 
+
+    bot.reply_to(message, "Cool! What kind of music do you like to listen to?") 
+
+    bot.register_next_step_handler(message, handle_fav_type) 
+
+  elif message.text == 'Art': 
+
+    bot.reply_to(message, "Awesome! Are you a artist?") 
+
+    bot.register_next_step_handler(message, handle_artist) 
+
+ 
+
+ 
+
+# Handling sports type input 
+
+def handle_sports_type(message): 
+
+  sports_type = message.text 
+
+  # Handling the sports type according to user's input 
+
+  bot.reply_to(message, "Nice! What's your favorite team?") 
+
+  bot.register_next_step_handler(message, handle_favorite_team) 
+
+ 
+
+ 
+
+# Handling favorite team input 
+
+def handle_favorite_team(message): 
+
+  favorite_team = message.text 
+
+  # Handling the favorite team according to user's input 
+
+  bot.reply_to( 
+
+    message, "Great choice! What do you think of their current season so far?") 
+
+  bot.register_next_step_handler(message, handle_current_season) 
+
+ 
+
+ 
+
+# Handling current season input 
+
+def handle_current_season(message): 
+
+  current_season = message.text 
+
+  # Handling the current season according to user's input 
+
+  bot.reply_to(message, "Do you think they can improve ?") 
+
+  bot.register_next_step_handler(message, handle_next_sport) 
+
+ 
+
+ 
+
+def handle_next_sport(message): 
+
+  imp = message.text 
+
+  bot.reply_to(message, "What else sports you are interested in?") 
+
+  bot.register_next_step_handler(message, handle_new_sport) 
+
+ 
+
+ 
+
+def handle_new_sport(message): 
+
+  new_sport = message.text 
+
+  bot.reply_to(message, "have you taken part in " + new_sport) 
+
+  bot.register_next_step_handler(message, handle_new_hobby) 
+
+ 
+
+ 
+
+def handle_new_hobby(message): 
+
+  new_hobby = message.text 
+
+  bot.reply_to(message, "Great to know!") 
+
+ 
+
+ 
+
+def handle_book_type(message): 
+
+  book_type = message.text 
+
+  bot.reply_to(message, "What is your favourite book?") 
+
+  bot.register_next_step_handler(message, handle_fav_book) 
+
+ 
+
+ 
+
+def handle_fav_book(message): 
+
+  fav_book = message.text 
+
+  bot.reply_to(message, "Great to know") 
+
+ 
+
+ 
+
+def handle_fav_type(message): 
+
+  fav_book = message.text 
+
+  bot.reply_to(message, "Amazing choice \n Whats your fav song?") 
+
+  bot.register_next_step_handler(message, handle_fav_song) 
+
+ 
+
+ 
+
+def handle_fav_song(message): 
+
+  fav_song = message.text 
+
+  bot.reply_to(message, "Great choice!") 
+
+ 
+
+ 
+
+def handle_artist(message): 
+
+  artist = message.text 
+
+  bot.reply_to(message, "Have you taken part in any art event?") 
+
+  bot.register_next_step_handler(message, handle_event_art) 
+
+ 
+
+ 
+
+def handle_event_art(message): 
+
+  art_event = message.text 
+
+  bot.reply_to(message, "Great to know!") 
+
+ 
+
+ 
+
+# We have defined four hobbies as well as questions 
+
+# you can also create predefined responses for your bot using a separate files 
+
+ 
+
+#START THE BOT 
+
+bot.polling()	 
+
+ 
