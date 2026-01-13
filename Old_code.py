@@ -1,20 +1,11 @@
 import os  # for env variables 
-
 import telebot  # THE LIBRARY FOR THE TELEGRAM BOT 
-
 import time  # FOR REMINDER WE NEED TO IMPORT TIME 
-
 import random 
-
 import requests 
-
 import response 
-
 import urllib.request 
-
 from bs4 import BeautifulSoup  #NEEDED FOR NEWS 
-
- 
 
 #THE BOT HAS BEEN CREATED 
 
@@ -23,10 +14,6 @@ API_KEY = os.getenv(
   'API_KEY')  # THE API KEY IS THE TOKEN ID GIVEN BY THE BOTFATHER 
 
 bot = telebot.TeleBot(API_KEY) 
-
- 
-
- 
 
 #DECLARATION OF COMMANDS 
 
@@ -40,10 +27,6 @@ def start(message):
 
     "Hello this is Artificix bot use /help for the possible commands. ") 
 
- 
-
- 
-
 @bot.message_handler(commands=['help']) 
 
 def help(message): 
@@ -55,10 +38,6 @@ def help(message):
     "Here are the possible commands\n Use /alert for setting a remainder.\n Use /chat to start chatting.\n Use /news to get latest news headlines.\n Use /about to know about bot.\n Use /contact to cantact us.\n Use /quote to get a random quote.\n Use /extra for extra commands that are included.\n" 
 
   ) 
-
- 
-
- 
 
 @bot.message_handler(commands=['about']) 
 
@@ -72,10 +51,6 @@ def about(message):
 
   ) 
 
- 
-
- 
-
 @bot.message_handler(commands=['contact']) 
 
 def contact(message): 
@@ -87,10 +62,6 @@ def contact(message):
     "You can contact us at https://t.me/Sneh_Joshi or https://t.me/Itachi98089 .\n" 
 
   ) 
-
- 
-
- 
 
 # List of quotes 
 
@@ -128,9 +99,6 @@ quotes = [
 
 ] 
 
- 
-
- 
 
 @bot.message_handler(commands=['quote']) 
 
@@ -139,10 +107,6 @@ def send_quote(message):
   quote = random.choice(quotes) 
 
   bot.reply_to(message, quote) 
-
- 
-
- 
 
 @bot.message_handler(commands=['extra']) 
 
@@ -776,10 +740,6 @@ def handle_fav_song(message):
 
   bot.reply_to(message, "Great choice!") 
 
- 
-
- 
-
 def handle_artist(message): 
 
   artist = message.text 
@@ -788,28 +748,12 @@ def handle_artist(message):
 
   bot.register_next_step_handler(message, handle_event_art) 
 
- 
-
- 
-
 def handle_event_art(message): 
 
   art_event = message.text 
 
   bot.reply_to(message, "Great to know!") 
 
- 
-
- 
-
-# We have defined four hobbies as well as questions 
-
-# you can also create predefined responses for your bot using a separate files 
-
- 
-
 #START THE BOT 
 
 bot.polling()	 
-
- 
