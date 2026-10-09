@@ -1,1 +1,1 @@
-This is a simple telegram bot made using telebot library.
+Python Telegram Bot using Telegram API and Telebot library.
